@@ -47,14 +47,14 @@ namespace DAN_XXXIX_Milica_Karetic
         public int ValidPositiveNumber()
         {
             string s = Console.ReadLine();
-            //BackToMainMenu(s);
+            BackToMainMenu(s);
             int Num;
             bool b = Int32.TryParse(s, out Num);
             while (!b || Num < 0)
             {
                 Console.WriteLine("Invalid input. Try again: ");
                 s = Console.ReadLine();
-                //BackToMainMenu(s);
+                BackToMainMenu(s);
                 b = Int32.TryParse(s, out Num);
             }
             return Num;
@@ -65,23 +65,21 @@ namespace DAN_XXXIX_Milica_Karetic
         /// </summary>
         /// <param name="input">input that returns the user</param>
         /// 
-        //public void BackToMainMenu(string input)
-        //{
-        //    if (input.ToLower() == "return")
-        //    {
-        //        Program.Main(null);
-        //    }
-        //}
+        public void BackToMainMenu(string input)
+        {
+            if (input.ToLower() == "return")
+            {
+                Program.Main(null);
+            }
+        }
+
+
 
         public string IsValidTimeFormat()
         {
-
-            
             string time = Console.ReadLine();
-            TimeSpan duration;
-            string format = "f";
-            bool validDuration = TimeSpan.TryParseExact(time, format, CultureInfo.CurrentCulture, out duration);
-            // bool t = TimeSpan.TryParse(time, out dummyOutput);
+            string format = "hh\\:mm\\:ss";
+            bool validDuration = TimeSpan.TryParseExact(time, format, CultureInfo.CurrentCulture, out TimeSpan duration);
             
             while (!validDuration)
             {

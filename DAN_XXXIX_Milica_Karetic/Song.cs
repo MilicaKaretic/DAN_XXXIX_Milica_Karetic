@@ -47,7 +47,7 @@ namespace DAN_XXXIX_Milica_Karetic
                 while ((line = sr.ReadLine()) != null)
                 {
                     Song song = new Song();
-                    list = line.Split(':', '[').ToList();
+                    list = line.Split(':', ',').ToList();
                     song.Author = list[0];
                     song.Name = list[1];
                     song.SongTimeHours = list[2];                   
@@ -72,7 +72,7 @@ namespace DAN_XXXIX_Milica_Karetic
 
             string author = v.GetInput("Enter author");
             string name = v.GetInput("Enter song name");
-            Console.WriteLine("Enter duration time");
+            Console.WriteLine("Enter duration time in format 00:00:00");
             string time = v.IsValidTimeFormat();
 
             List<string> list = new List<string>();
@@ -99,7 +99,7 @@ namespace DAN_XXXIX_Milica_Karetic
             {
                 for (int i = 0; i < songs.Count; i++)
                 {
-                    sw.WriteLine(songs[i].Author + ":" + songs[i].Name + "[" + songs[i].SongTimeHours + ":" + songs[i].SongTimeMinutes + ":" + songs[i].SongTimeSeconds + "]");
+                    sw.WriteLine(songs[i].Author + ": " + songs[i].Name + ", " + songs[i].SongTimeHours + ":" + songs[i].SongTimeMinutes + ":" + songs[i].SongTimeSeconds);
                 }
             }
         }
@@ -113,7 +113,7 @@ namespace DAN_XXXIX_Milica_Karetic
 
             for (int i = 0; i < songs.Count; i++)
             {
-                Console.WriteLine(songs[i].Author + ":" + songs[i].Name + "[" + songs[i].SongTimeHours + ":" + songs[i].SongTimeMinutes + ":" + songs[i].SongTimeSeconds);
+                Console.WriteLine(i+1 + ". " +songs[i].Author + ":" + songs[i].Name + "," + songs[i].SongTimeHours + ":" + songs[i].SongTimeMinutes + ":" + songs[i].SongTimeSeconds);
             }
 
         }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace DAN_XXXIX_Milica_Karetic
@@ -18,9 +19,11 @@ namespace DAN_XXXIX_Milica_Karetic
             Console.WriteLine("4. Exit");
             Console.WriteLine("*You can use 'return' to return back to the main menu ");
         }
-        static void Main(string[] args)
+
+        public static void Main(string[] args)
         {
             Song song = new Song();
+            AudioPlayer audio = new AudioPlayer();
             string selected = "";
 
             do
@@ -32,16 +35,22 @@ namespace DAN_XXXIX_Milica_Karetic
                 switch (selected)
                 {
                     case "1":
-                        song.AddSong();
+                        Thread t1 = new Thread(song.AddSong);
+                        t1.Start();
+                        t1.Join();
                         Console.WriteLine();
                         break;
                     case "2":
-                        //song.GetAllSongs();
-                        song.WriteSongs(song.GetAllSongs());
+                        songs = song.GetAllSongs();
+                        Thread t2 = new Thread(() => song.WriteSongs(songs));
+                        t2.Start();
+                        t2.Join();
                         Console.WriteLine();
                         break;
                     case "3":
-                        
+                        Thread t3 = new Thread(audio.OpenPlayer);
+                        t3.Start();
+                        t3.Join();
                         Console.WriteLine();
                         break;
                     case "4":
