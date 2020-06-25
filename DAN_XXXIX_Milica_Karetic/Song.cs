@@ -18,24 +18,41 @@ namespace DAN_XXXIX_Milica_Karetic
 
         public string FileName = @"..\..\Files\Music.txt";
 
+        /// <summary>
+        /// Constructor without parameters
+        /// </summary>
         public Song()
         {
 
         }
-
+        /// <summary>
+        /// Parametrised constructor
+        /// </summary>
+        /// <param name="author">Author</param>
+        /// <param name="name">Song name</param>
         public Song(string author, string name)
         {
             Author = author;
             Name = name;
         }
-
+        /// <summary>
+        /// Parametrised constructor
+        /// </summary>
+        /// <param name="author">Author</param>
+        /// <param name="name">Song name</param>
+        /// <param name="songTimeHours">Hours</param>
+        /// <param name="songTimeMinutes">Minutes</param>
+        /// <param name="songTimeSeconds">Seconds</param>
         public Song(string author, string name, string songTimeHours, string songTimeMinutes, string songTimeSeconds) : this(author, name)
         {
             SongTimeHours = songTimeHours;
             SongTimeMinutes = songTimeMinutes;
             SongTimeSeconds = songTimeSeconds;
         }
-
+        /// <summary>
+        /// Get all songs from file
+        /// </summary>
+        /// <returns>Songs list</returns>
         internal List<Song> GetAllSongs()
         {
             List<Song> songs = new List<Song>();
@@ -61,7 +78,7 @@ namespace DAN_XXXIX_Milica_Karetic
         }
 
         /// <summary>
-        /// Creates new song
+        /// Create new song
         /// </summary>
         internal  void AddSong()
         {
@@ -87,12 +104,12 @@ namespace DAN_XXXIX_Milica_Karetic
             WriteSongsFile(songs);
         }
 
-        
+
 
         /// <summary>
         /// Write songs in file
         /// </summary>
-        /// <param name="members"></param>
+        /// <param name="songs">Songs list</param>
         private void WriteSongsFile(List<Song> songs)
         {
             using (StreamWriter sw = new StreamWriter(FileName))
@@ -107,7 +124,7 @@ namespace DAN_XXXIX_Milica_Karetic
         /// <summary>
         /// Write songs in console
         /// </summary>
-        /// <param name="members"></param>
+        /// <param name="songs"></param>
         internal void WriteSongs(List<Song> songs)
         {
 

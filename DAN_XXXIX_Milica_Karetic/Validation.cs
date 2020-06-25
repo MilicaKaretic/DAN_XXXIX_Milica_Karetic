@@ -74,7 +74,10 @@ namespace DAN_XXXIX_Milica_Karetic
         }
 
 
-
+        /// <summary>
+        /// Validation for time format
+        /// </summary>
+        /// <returns>Song duration</returns>
         public string IsValidTimeFormat()
         {
             string time = Console.ReadLine();

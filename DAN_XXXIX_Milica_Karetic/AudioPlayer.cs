@@ -29,7 +29,10 @@ namespace DAN_XXXIX_Milica_Karetic
         private static List<string> addsList = new List<string>();
         private static Random rnd = new Random();
 
-
+        /// <summary>
+        /// Pick song from list
+        /// </summary>
+        /// <returns>Picked song</returns>
         private Song PickSong()
         {
             List<Song> songs = new List<Song>();
@@ -59,6 +62,11 @@ namespace DAN_XXXIX_Milica_Karetic
 
         }
 
+        /// <summary>
+        /// Get song duration time from song properties hours, minutes and seconds
+        /// </summary>
+        /// <param name="s">Song</param>
+        /// <returns>Song duration</returns>
         private string GetSongDuration(Song s)
         {
             string hours = s.SongTimeHours;
@@ -70,15 +78,26 @@ namespace DAN_XXXIX_Milica_Karetic
             return time;
         }
 
+        /// <summary>
+        /// Playing song - two timerCallbacks for playing song and adds
+        /// </summary>
+        /// <param name="duration"></param>
         private static void PlayingSong(object duration)
         {
+            //end song time
             TimeSpan endTime = TimeSpan.Parse( DateTime.Now.ToLongTimeString()) + TimeSpan.Parse(duration.ToString());
 
+            //write playing song per 1000 msc
             t = new Timer(new TimerCallback(Print), endTime, 0, 1000);
             
+            //write random add from file per 200 msc
             tAdds = new Timer(new TimerCallback(PrintAdds), endTime, 0, 200);
         }
 
+        /// <summary>
+        /// Get all adds from file
+        /// </summary>
+        /// <returns>List adds</returns>
         private List<string> GetAllAdds()
         {
             List<string> adds = new List<string>();
@@ -94,6 +113,11 @@ namespace DAN_XXXIX_Milica_Karetic
             return adds;
         }
 
+        /// <summary>
+        /// Get random add from add list
+        /// </summary>
+        /// <param name="adds">Add list</param>
+        /// <returns>Random add</returns>
         private static  string GetRandomAdd(List<string> adds)
         {
             int maxIndex = adds.Count;
@@ -101,10 +125,16 @@ namespace DAN_XXXIX_Milica_Karetic
             return adds[num];
         }
 
+        /// <summary>
+        /// Method called by timer
+        /// </summary>
+        /// <param name="endTime">End song time</param>
         public static void PrintAdds(object endTime)
         {
+            //random add
             string add = GetRandomAdd(addsList);
 
+            //if song is in progress
             if (TimeSpan.Parse(DateTime.Now.ToLongTimeString()) < (TimeSpan)endTime)
             {
                 Console.WriteLine(add);
@@ -112,10 +142,15 @@ namespace DAN_XXXIX_Milica_Karetic
             else
             {
                 Console.WriteLine("Song ends. Press return to exit or any other key to continue...");
+                //signal end song
                 event1.Set();
             }
         }
 
+        /// <summary>
+        /// Method called by timer
+        /// </summary>
+        /// <param name="endTime"></param>
         public static void Print(object endTime)
         {
             if(TimeSpan.Parse(DateTime.Now.ToLongTimeString()) < (TimeSpan)endTime)
@@ -124,12 +159,16 @@ namespace DAN_XXXIX_Milica_Karetic
             }
             else
             {
-                Console.WriteLine("Song ends. Press return to exit or any other key to continue...");               
+                Console.WriteLine("Song ends. Press return to exit or any other key to continue..."); 
+                //signal end song
                 event1.Set();
             }
             
         }
         
+        /// <summary>
+        /// Open player - list all songs and you can pick song to play
+        /// </summary>
         internal void OpenPlayer()
         {                  
             List<Song> songs = new List<Song>();
@@ -139,18 +178,25 @@ namespace DAN_XXXIX_Milica_Karetic
 
             do
             {
+                //show all songs
                 song.WriteSongs(song.GetAllSongs());
+                //picked song
                 Song pickedSong = PickSong();
+                //now
                 string timeNow = DateTime.Now.ToLongTimeString();
+                //song duration
                 string timeSong = GetSongDuration(pickedSong);
                 
-
+                //message to user
                 Console.WriteLine(DateTime.Now.ToLongTimeString() + " " + pickedSong.Name);
 
+                //thread that notify user that song is playing
                 Thread t1 = new Thread(PlayingSong);
                 t1.Start(timeSong);
 
+                //wait song to end
                 event1.WaitOne();
+                //dispose timers
                 t.Dispose();
                 tAdds.Dispose();
 
