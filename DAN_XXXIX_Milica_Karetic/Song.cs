@@ -36,7 +36,7 @@ namespace DAN_XXXIX_Milica_Karetic
             SongTimeSeconds = songTimeSeconds;
         }
 
-        public List<Song> GetAllSongs()
+        internal List<Song> GetAllSongs()
         {
             List<Song> songs = new List<Song>();
             List<string> list = new List<string>();
@@ -61,9 +61,9 @@ namespace DAN_XXXIX_Milica_Karetic
         }
 
         /// <summary>
-        /// Creates new mentor
+        /// Creates new song
         /// </summary>
-        public  void AddSong()
+        internal  void AddSong()
         {
             Validation v = new Validation();
             //get mentors from file
@@ -93,13 +93,13 @@ namespace DAN_XXXIX_Milica_Karetic
         /// Write songs in file
         /// </summary>
         /// <param name="members"></param>
-        public void WriteSongsFile(List<Song> songs)
+        private void WriteSongsFile(List<Song> songs)
         {
             using (StreamWriter sw = new StreamWriter(FileName))
             {
                 for (int i = 0; i < songs.Count; i++)
                 {
-                    sw.WriteLine(songs[i].Author + ": " + songs[i].Name + ", " + songs[i].SongTimeHours + ":" + songs[i].SongTimeMinutes + ":" + songs[i].SongTimeSeconds);
+                    sw.WriteLine(songs[i].Author + ":" + songs[i].Name + "," + songs[i].SongTimeHours + ":" + songs[i].SongTimeMinutes + ":" + songs[i].SongTimeSeconds);
                 }
             }
         }
@@ -108,12 +108,12 @@ namespace DAN_XXXIX_Milica_Karetic
         /// Write songs in console
         /// </summary>
         /// <param name="members"></param>
-        public void WriteSongs(List<Song> songs)
+        internal void WriteSongs(List<Song> songs)
         {
 
             for (int i = 0; i < songs.Count; i++)
             {
-                Console.WriteLine(i+1 + ". " +songs[i].Author + ":" + songs[i].Name + "," + songs[i].SongTimeHours + ":" + songs[i].SongTimeMinutes + ":" + songs[i].SongTimeSeconds);
+                Console.WriteLine(i+1 + ". " +songs[i].Author + ": " + songs[i].Name + ", " + songs[i].SongTimeHours + ":" + songs[i].SongTimeMinutes + ":" + songs[i].SongTimeSeconds);
             }
 
         }

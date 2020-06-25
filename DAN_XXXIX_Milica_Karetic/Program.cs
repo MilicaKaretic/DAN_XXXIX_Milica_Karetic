@@ -11,6 +11,9 @@ namespace DAN_XXXIX_Milica_Karetic
     {
         public static List<Song> songs = new List<Song>();
 
+        /// <summary>
+        /// Menu options
+        /// </summary>
         public static void PrintOptions()
         {
             Console.WriteLine("1. Add new song");
@@ -56,13 +59,12 @@ namespace DAN_XXXIX_Milica_Karetic
                     case "4":
                         break;
                     default:
-                        Console.Write("Invalid input.Try again: ");
+                        Console.Write("Invalid input.Try again.");
                         break;
                 }
 
             } while (selected != "4");
 
-            Console.ReadKey();
         }
     }
 }

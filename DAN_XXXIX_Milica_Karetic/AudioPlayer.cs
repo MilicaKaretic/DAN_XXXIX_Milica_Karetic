@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Threading;
 
 namespace DAN_XXXIX_Milica_Karetic
@@ -9,9 +10,27 @@ namespace DAN_XXXIX_Milica_Karetic
         public Song song = new Song();
         public Validation v = new Validation();
 
-        public static AutoResetEvent event1 = new AutoResetEvent(false);
+        private string fileName = @"..\..\Files\Adds.txt";
+        /// <summary>
+        /// event for song end
+        /// </summary>
+        private static AutoResetEvent event1 = new AutoResetEvent(false);
+        /// <summary>
+        /// timer for playing song
+        /// </summary>
+        public static Timer t;
+        /// <summary>
+        /// timer for writing adds
+        /// </summary>
+        public static Timer tAdds;
+        /// <summary>
+        /// list all adds from file
+        /// </summary>
+        private static List<string> addsList = new List<string>();
+        private static Random rnd = new Random();
 
-        public Song PickSong()
+
+        private Song PickSong()
         {
             List<Song> songs = new List<Song>();
             songs = song.GetAllSongs();
@@ -40,7 +59,7 @@ namespace DAN_XXXIX_Milica_Karetic
 
         }
 
-        public string GetSongDuration(Song s)
+        private string GetSongDuration(Song s)
         {
             string hours = s.SongTimeHours;
             string minutes = s.SongTimeMinutes;
@@ -51,13 +70,50 @@ namespace DAN_XXXIX_Milica_Karetic
             return time;
         }
 
-        public static bool end = false;
-        public static void PlayingSong(object duration)
+        private static void PlayingSong(object duration)
         {
             TimeSpan endTime = TimeSpan.Parse( DateTime.Now.ToLongTimeString()) + TimeSpan.Parse(duration.ToString());
 
             t = new Timer(new TimerCallback(Print), endTime, 0, 1000);
+            
+            tAdds = new Timer(new TimerCallback(PrintAdds), endTime, 0, 200);
+        }
 
+        private List<string> GetAllAdds()
+        {
+            List<string> adds = new List<string>();
+            using (StreamReader sr = new StreamReader(fileName))
+            {
+                string line;
+                while ((line = sr.ReadLine()) != null)
+                {
+                    adds.Add(line);
+                }
+            }
+
+            return adds;
+        }
+
+        private static  string GetRandomAdd(List<string> adds)
+        {
+            int maxIndex = adds.Count;
+            int num = rnd.Next(0, maxIndex);
+            return adds[num];
+        }
+
+        public static void PrintAdds(object endTime)
+        {
+            string add = GetRandomAdd(addsList);
+
+            if (TimeSpan.Parse(DateTime.Now.ToLongTimeString()) < (TimeSpan)endTime)
+            {
+                Console.WriteLine(add);
+            }
+            else
+            {
+                Console.WriteLine("Song ends. Press return to exit or any other key to continue...");
+                event1.Set();
+            }
         }
 
         public static void Print(object endTime)
@@ -72,17 +128,14 @@ namespace DAN_XXXIX_Milica_Karetic
                 event1.Set();
             }
             
-
         }
         
-
-        static Timer t;
-        public void OpenPlayer()
+        internal void OpenPlayer()
         {                  
             List<Song> songs = new List<Song>();
-            
-            
+                    
             Validation v = new Validation();
+            addsList = GetAllAdds();
 
             do
             {
@@ -90,6 +143,7 @@ namespace DAN_XXXIX_Milica_Karetic
                 Song pickedSong = PickSong();
                 string timeNow = DateTime.Now.ToLongTimeString();
                 string timeSong = GetSongDuration(pickedSong);
+                
 
                 Console.WriteLine(DateTime.Now.ToLongTimeString() + " " + pickedSong.Name);
 
@@ -98,6 +152,7 @@ namespace DAN_XXXIX_Milica_Karetic
 
                 event1.WaitOne();
                 t.Dispose();
+                tAdds.Dispose();
 
             } while (Console.ReadLine() != "return");
 
