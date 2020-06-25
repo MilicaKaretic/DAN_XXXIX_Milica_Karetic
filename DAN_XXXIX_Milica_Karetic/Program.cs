@@ -20,7 +20,7 @@ namespace DAN_XXXIX_Milica_Karetic
             Console.WriteLine("2. Get all songs");
             Console.WriteLine("3. Open audio player");
             Console.WriteLine("4. Exit");
-            Console.WriteLine("*You can use 'return' to return back to the main menu ");
+            //Console.WriteLine("*You can use 'return' to return back to the main menu ");
         }
 
         public static void Main(string[] args)
@@ -31,9 +31,9 @@ namespace DAN_XXXIX_Milica_Karetic
 
             do
             {
-                Console.WriteLine("Welcome! We offer next options:");
+                Console.WriteLine("\nWelcome! We offer next options:");
                 PrintOptions();
-                Console.Write("Your choice is: ");
+                Console.WriteLine("Your choice is: ");
                 selected = Console.ReadLine();
                 switch (selected)
                 {
@@ -59,7 +59,7 @@ namespace DAN_XXXIX_Milica_Karetic
                     case "4":
                         break;
                     default:
-                        Console.Write("Invalid input.Try again.");
+                        Console.WriteLine("Invalid input.Try again.");
                         break;
                 }
 

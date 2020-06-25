@@ -29,6 +29,23 @@ namespace DAN_XXXIX_Milica_Karetic
         private static List<string> addsList = new List<string>();
         private static Random rnd = new Random();
 
+        //delegate for notification user
+        public delegate void Notification();
+        //event based on that delegate
+        public event Notification onNotification;
+
+        /// <summary>
+        /// Raise an event
+        /// </summary>
+        internal virtual void Notify()
+        {
+            if (onNotification != null)
+            {
+                onNotification();
+            }
+
+        }
+
         /// <summary>
         /// Pick song from list
         /// </summary>
@@ -38,12 +55,18 @@ namespace DAN_XXXIX_Milica_Karetic
             List<Song> songs = new List<Song>();
             songs = song.GetAllSongs();
             Song s = new Song();
-            int num;
+            int num = 0;
             do
             {
                 int a = 0;
-                Console.WriteLine("Pick song to listen");
-                num = v.ValidPositiveNumber();
+                Console.WriteLine("\nPick number in front of song that you want to listen");
+                //if (Int32.TryParse(Console.ReadLine(), out num))
+                //{
+                //    Console.WriteLine("Invalid input. Please enter number.");
+                //    continue;
+                //}
+                   
+               num = v.ValidPositiveNumber();
                 for (int i = 0; i < songs.Count; i++)
                 {
                     if ((num - 1) == i)
@@ -141,7 +164,6 @@ namespace DAN_XXXIX_Milica_Karetic
             }
             else
             {
-                Console.WriteLine("Song ends. Press return to exit or any other key to continue...");
                 //signal end song
                 event1.Set();
             }
@@ -159,7 +181,7 @@ namespace DAN_XXXIX_Milica_Karetic
             }
             else
             {
-                Console.WriteLine("Song ends. Press return to exit or any other key to continue..."); 
+                Console.WriteLine("\nSong ended."); 
                 //signal end song
                 event1.Set();
             }
@@ -188,7 +210,7 @@ namespace DAN_XXXIX_Milica_Karetic
                 string timeSong = GetSongDuration(pickedSong);
                 
                 //message to user
-                Console.WriteLine(DateTime.Now.ToLongTimeString() + " " + pickedSong.Name);
+                Console.WriteLine("\n" + DateTime.Now.ToLongTimeString() + " " + pickedSong.Name + "\n");
 
                 //thread that notify user that song is playing
                 Thread t1 = new Thread(PlayingSong);
@@ -199,10 +221,33 @@ namespace DAN_XXXIX_Milica_Karetic
                 //dispose timers
                 t.Dispose();
                 tAdds.Dispose();
+                Console.WriteLine("\nDo you want to stop audio player? [yes/no]");
+                string option = v.YesNo();
+                if (option.ToLower() == "yes")
+                {
+                    //event
+                    onNotification = NotifyStop;
+                    Notify();
+                    break;
+                }
+                else
+                {
+                    Console.WriteLine("\nPress any key to view all songs");
+                    continue;
+                }
+                    
 
             } while (Console.ReadLine() != "return");
 
+            
+        }
 
+        /// <summary>
+        /// Notification message
+        /// </summary>
+        internal void NotifyStop()
+        {
+            Console.WriteLine("\nAudio player stopped");
         }
     }
 }

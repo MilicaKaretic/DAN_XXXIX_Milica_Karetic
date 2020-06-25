@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DAN_XXXIX_Milica_Karetic
 {
@@ -17,11 +13,9 @@ namespace DAN_XXXIX_Milica_Karetic
         {
             string choose = Console.ReadLine().ToLower();
 
-            //BackToMainMenu(choose);
             while (choose != "yes" && choose != "no")
             {
                 Console.WriteLine("Invalid input. Try again: ");
-                //BackToMainMenu(choose);
                 choose = Console.ReadLine().ToLower();
             }
 
@@ -68,7 +62,7 @@ namespace DAN_XXXIX_Milica_Karetic
         public void BackToMainMenu(string input)
         {
             if (input.ToLower() == "return")
-            {
+            {            
                 Program.Main(null);
             }
         }
@@ -86,7 +80,7 @@ namespace DAN_XXXIX_Milica_Karetic
             
             while (!validDuration)
             {
-                Console.WriteLine("Invalid input. Try again: ");
+                Console.WriteLine("Invalid input. Try again: time ");
                 time = Console.ReadLine();
                 validDuration = TimeSpan.TryParseExact(time, format, CultureInfo.CurrentCulture, out duration);
             }
